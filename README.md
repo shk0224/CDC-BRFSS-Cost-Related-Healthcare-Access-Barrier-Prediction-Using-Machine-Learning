@@ -7,7 +7,36 @@ This project uses the CDC's **Behavioral Risk Factor Surveillance System (BRFSS)
 - **Development data:** BRFSS 2024 (455,997 adults)
 - **External validation:** BRFSS 2025 (354,916 adults); the models were frozen, with no retraining
 - **Model:** XGBoost, leakage-free pipeline, reported following **TRIPOD+AI**
-- **Includes:** five reproducible notebooks, saved models, and a **web app** (FastAPI)
+- **Includes:** four reproducible notebooks, saved models, and a **web app** (FastAPI)
+
+---
+
+## The problem
+
+**Many U.S. adults need to see a doctor but don't, because they can't afford it.**
+
+- In BRFSS 2024, **12.3%** of adults (survey-weighted) said they could not see a doctor in the past 12 months because of cost.
+- **Insurance does not remove the barrier.** About two-thirds of the adults reporting it were insured.
+- Delayed care has real consequences. In the Commonwealth Fund's 2024 survey, 41% of working-age adults who delayed care because of cost said a health problem got worse.
+
+Programmes that can help have **limited capacity**. Examples are enrolment assistance, financial counselling, sliding-fee clinic referral and community health worker outreach. They need a quick way to find the people most likely to benefit. Existing approaches have three gaps:
+
+1. **Too long.** Published models use dozens of survey items. Outreach needs a form that takes about a minute.
+2. **Risks that can't be trusted.** Common fixes for rare outcomes (oversampling, re-weighting) distort predicted probabilities. A tool that tells someone "your risk is 40%" must be calibrated.
+3. **Unknown who gets missed.** Fairness checks usually compare accuracy across groups. They rarely ask who the screener fails to flag, such as insured, middle-income adults.
+
+## What this project does
+
+**It builds a short, calibrated, externally validated screener that flags adults likely to face a cost barrier to care.**
+
+- **Short:** 12 everyday survey questions (income, coverage, age, health, etc.). Length is counted in actual questions asked, not model inputs.
+- **Trustworthy risk:** a calibrated percentage. A predicted 20% means about 1 in 5 similar adults report a cost barrier.
+- **Proven useful:** at the same workload, it beats simple rules such as "uninsured or low income". Decision curve analysis supports it across a wide range of thresholds.
+- **Proven durable:** frozen and tested on the next year's survey (BRFSS 2025), including a state absent from training.
+- **Honest about gaps:** it reports where performance drops (some racial and ethnic groups) and who it misses (most insured adults with cost barriers).
+- **Usable:** a web app scores a person in seconds.
+
+**Who could use it:** health departments, community health centres, hospital financial-counselling teams and outreach programmes that need to prioritise limited resources. It is a **population-health screening aid**. It is not a diagnosis or an eligibility decision.
 
 ---
 
