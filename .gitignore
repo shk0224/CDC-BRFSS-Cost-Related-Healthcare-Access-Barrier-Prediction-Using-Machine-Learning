@@ -221,3 +221,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+#ignore huge dataset
+data/LLCP2025.XPT
