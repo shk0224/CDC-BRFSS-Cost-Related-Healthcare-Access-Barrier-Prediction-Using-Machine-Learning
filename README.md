@@ -52,7 +52,6 @@ Race and ethnicity are **not** inputs. They are used only to check fairness.
 ├── templates/index.html        # App page
 ├── static/css/style.css        # App styling
 ├── notebooks/
-│   ├── 0_Data_Preparation_BRFSS2024.ipynb          # CDC 2024 file -> data/BRFSS2024_access.csv
 │   ├── 1_EDA_BRFSS.ipynb                           # Exploratory data analysis
 │   ├── 2_Feature_Engineering_and_Model_Training_BRFSS.ipynb  # Full model + 12-question screener
 │   ├── 3_External_Validation_BRFSS2025.ipynb       # Frozen models tested on 2025 (also creates the 2025 CSV)
@@ -73,12 +72,16 @@ Race and ethnicity are **not** inputs. They are used only to check fairness.
 
 ## Get the data
 
-The data files are too large for GitHub. Download them for free from the CDC:
+The data files are too large for GitHub, so `data/` is not in the repo. You need two files there:
 
-1. **BRFSS 2024:** [cdc.gov/brfss/annual_data/annual_2024.html](https://www.cdc.gov/brfss/annual_data/annual_2024.html). Download the SAS Transport (XPT) file, unzip it, and save it as `data/LLCP2024.XPT`.
-2. **BRFSS 2025:** [cdc.gov/brfss/annual_data/annual_2025.html](https://www.cdc.gov/brfss/annual_data/annual_2025.html). Do the same and save it as `data/LLCP2025.XPT`.
+| File | Used by | Where it comes from |
+|---|---|---|
+| `data/BRFSS2024_access.csv` | Notebooks 1, 2, 4 | Analysis extract of the CDC BRFSS 2024 public-use file ([cdc.gov/brfss/annual_data/annual_2024.html](https://www.cdc.gov/brfss/annual_data/annual_2024.html)). Available from the author on request. |
+| `data/LLCP2025.XPT` | Notebook 3 | CDC BRFSS 2025 public-use file ([cdc.gov/brfss/annual_data/annual_2025.html](https://www.cdc.gov/brfss/annual_data/annual_2025.html)). Download the SAS Transport (XPT) file, unzip it and save it under this name. |
 
-> Some unzipped XPT files end with a trailing space in the file name (for example `LLCP2024.XPT `). Rename them so the name ends exactly in `.XPT`.
+Notebook 3 creates `data/BRFSS2025_access.csv` from the XPT file, and notebook 4 uses it.
+
+> Some unzipped XPT files end with a trailing space in the file name (for example `LLCP2025.XPT `). Rename them so the name ends exactly in `.XPT`.
 
 ---
 
@@ -101,7 +104,6 @@ Run the notebooks **in order**, from inside the `notebooks/` folder:
 
 | Step | Notebook | Needs | Creates |
 |---|---|---|---|
-| 0 | `0_Data_Preparation_BRFSS2024` | `data/LLCP2024.XPT` | `data/BRFSS2024_access.csv` |
 | 1 | `1_EDA_BRFSS` | 2024 CSV | charts and statistics |
 | 2 | `2_Feature_Engineering_and_Model_Training_BRFSS` | 2024 CSV | both models in `models/` |
 | 3 | `3_External_Validation_BRFSS2025` | `data/LLCP2025.XPT`, `models/` | 2025 results, `data/BRFSS2025_access.csv` |
