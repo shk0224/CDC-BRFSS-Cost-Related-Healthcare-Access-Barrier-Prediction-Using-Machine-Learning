@@ -1,0 +1,56 @@
+{
+  "selected": "XGBClassifier",
+  "cv_auc": {
+    "XGBoost": 0.8390483093235773,
+    "RF": 0.8287092411192605,
+    "KNN": 0.7301607118419842
+  },
+  "params": {
+    "XGBoost": {
+      "n_estimators": 200,
+      "min_child_weight": 3,
+      "max_depth": 3,
+      "learning_rate": 0.1
+    },
+    "RF": {
+      "n_estimators": 200,
+      "max_features": "log2",
+      "max_depth": null
+    },
+    "KNN": {
+      "weights": "distance",
+      "n_neighbors": 9,
+      "algorithm": "brute"
+    }
+  },
+  "threshold": 0.71,
+  "test": {
+    "default 0.5 (unweighted)": {
+      "threshold": 0.5,
+      "ROC-AUC": 0.845,
+      "PR-AUC": 0.4184,
+      "Accuracy": 0.7532,
+      "Precision (Yes)": 0.2461,
+      "Recall (Yes)": 0.7731,
+      "F1 (Yes)": 0.3734
+    },
+    "tuned 0.71 (unweighted)": {
+      "threshold": 0.71,
+      "ROC-AUC": 0.845,
+      "PR-AUC": 0.4184,
+      "Accuracy": 0.8668,
+      "Precision (Yes)": 0.3614,
+      "Recall (Yes)": 0.5227,
+      "F1 (Yes)": 0.4273
+    },
+    "tuned 0.71 (\ud83d\udcc4 survey-weighted)": {
+      "threshold": 0.71,
+      "ROC-AUC": 0.8327,
+      "PR-AUC": 0.455,
+      "Accuracy": 0.8321,
+      "Precision (Yes)": 0.372,
+      "Recall (Yes)": 0.5782,
+      "F1 (Yes)": 0.4527
+    }
+  }
+}
