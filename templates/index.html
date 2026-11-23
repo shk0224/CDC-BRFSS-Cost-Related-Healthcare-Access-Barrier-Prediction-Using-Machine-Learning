@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cost-Barrier Screener</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1>Cost-Barrier Screener</h1>
+      <p>12 questions · about one minute · estimates the chance that a person could not afford to see a doctor in the past year</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    {% if result %}
+    <section class="result {{ 'result-high' if result.flagged else 'result-low' }}" aria-live="polite">
+      <div class="risk">{{ result.risk_pct }}%</div>
+      <div>
+        <h2>{{ 'Likely cost barrier' if result.flagged else 'Cost barrier less likely' }}</h2>
+        <p>About {{ result.risk_pct | round | int }} in 100 adults who answered like this reported that they could not afford to see a doctor.
+           People at {{ result.threshold_pct }}% or above are flagged for follow-up.</p>
+        {% if result.flagged %}
+        <p class="next">Suggested next step: offer help with coverage options, financial counseling or sliding-fee care.</p>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if errors %}
+    <section class="errors">
+      <strong>Please answer these questions:</strong>
+      <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+    </section>
+    {% endif %}
+
+    <form method="post" action="/" class="card">
+      {% for q in questions %}
+      <fieldset class="q">
+        <legend><span class="num">{{ loop.index }}</span>{{ q.label }}</legend>
+        {% if q.hint %}<p class="hint">{{ q.hint }}</p>{% endif %}
+        <div class="options">
+          {% for value, text in q.options %}
+          <label class="opt">
+            <input type="radio" name="{{ q.key }}" value="{{ value }}"
+                   {% if answers.get(q.key) == value %}checked{% endif %}
+                   {% if not q.optional %}required{% endif %}>
+            <span>{{ text }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% endfor %}
+      <div class="actions">
+        <button type="submit">Estimate risk</button>
+        <a href="/" class="reset">Start over</a>
+      </div>
+    </form>
+
+    <footer class="note">
+      <p><strong>About this tool.</strong> An XGBoost model trained on the CDC Behavioral Risk Factor Surveillance System (BRFSS) 2024
+         (n = 455,997) and validated on BRFSS 2025. Held-out ROC-AUC 0.84; risks are calibrated.
+         Race and ethnicity are not used as inputs.</p>
+      <p>This is a population-health screening aid, not medical, financial or eligibility advice. It describes people's
+         reported experience in the past 12 months and does not predict the future. It detects cost barriers less well among
+         insured and higher-income adults.</p>
+    </footer>
+  </main>
+</body>
+</html>
